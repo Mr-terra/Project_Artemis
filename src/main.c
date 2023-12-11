@@ -15,15 +15,19 @@ int main(void)
     Texture2D texture_axe_player = LoadTextureFromImage(axe_player);
     UnloadImage(axe_player);
 
-    Image walking_player = LoadImage("assets/img/walk_player.png");
-    Texture2D texture_walking_player = LoadTextureFromImage(walking_player);
-    UnloadImage(walking_player);
+    Image walking_player_right = LoadImage("assets/img/walk_player.png");
+    Texture2D texture_walking_player_right = LoadTextureFromImage(walking_player_right);
+    UnloadImage(walking_player_right);
 
     //Loading font
     Font font1 = LoadFont("assets/img/Gods_font.png");
 
     //Seting screen
     GameScreen currentscreen = GAMEPLAY;
+
+    //player information
+    bool is_going_right = true;
+    bool is_going_left = false;
 
     //frames stuff related
         //player frames stuff
@@ -42,14 +46,15 @@ int main(void)
                 .frames_counter = 0,
                 .player = {400, 280, 40, 40},
                 .texture_axe_player = texture_axe_player,
-                .texture_walking_player = texture_walking_player,
+                .texture_walking_player_right = texture_walking_player_right,
                 .player_frame = player_frame,
                 .player_nmb_walking_frame = player_nmb_walking_frame,
                 .framesCounter = framesCounter,
                 .framesSpeed = framesSpeed,
                 .currentFrame = currentFrame,
-                .frametime = frametime
-            };
+                .frametime = frametime,
+                .is_going_right = is_going_right,
+                .is_going_left = is_going_left};
 
             SetTargetFPS(60);
 

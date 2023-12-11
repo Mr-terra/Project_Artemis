@@ -9,15 +9,17 @@ struct structure_game
     //textures
         Texture2D basic_screen_texture;
         Texture2D texture_axe_player;
-        Texture2D texture_walking_player;
+        Texture2D texture_walking_player_right;
 
         // font
         Font font1;
 
         // player
         Rectangle player;
+        bool is_going_left;
+        bool is_going_right;
 
-    //FPS
+        // FPS
         int frames_counter;
 
         //Frames stuff related
