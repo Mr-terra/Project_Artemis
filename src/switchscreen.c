@@ -1,16 +1,17 @@
 #include <raylib.h>
 #include "gods.h"
+#include "structure_game.h"
 
-void switchscreen(GameScreen *currentscreen,int *frames_counter)
+void switchscreen(GameScreen *currentscreen, struct structure_game *game)
 {
     switch (*currentscreen)
     {
     case INTRO:
     {
-        (*frames_counter)++;
-        if (*frames_counter > 180)
+        (game->frames_counter)++;
+        if (game->frames_counter > 180)
         {
-            *frames_counter=0;
+            game->frames_counter = 0;
             *currentscreen = LOGO;
         }
     }
@@ -18,8 +19,8 @@ void switchscreen(GameScreen *currentscreen,int *frames_counter)
 
     case LOGO:
     {
-        (*frames_counter)++;
-        if (*frames_counter > 180)
+        (game->frames_counter)++;
+        if (game->frames_counter > 180)
         {
             *currentscreen = TITLE;
         }

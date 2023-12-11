@@ -6,6 +6,7 @@
 	],
 	"settings": {
 		"files.associations": {
+			"*.embeddedhtml": "html",
 			"raylib.h": "c",
 			"math.h": "c",
 			"blocks.h": "c",
@@ -50,7 +51,9 @@
 			"stdexcept": "cpp",
 			"streambuf": "cpp",
 			"cinttypes": "cpp",
-			"typeinfo": "cpp"
+			"typeinfo": "cpp",
+			"stdlib.h": "c",
+			"structure_game.h": "c"
 		},
 		"git.autoRepositoryDetection": false,
 		"git.enabled": false
