@@ -1,6 +1,7 @@
 #include <raylib.h>
 #include "gods.h"
 #include "structure_game.h"
+#include "structure_player.h"
 
 int main(void)
 {
@@ -15,9 +16,13 @@ int main(void)
     Texture2D texture_axe_player = LoadTextureFromImage(axe_player);
     UnloadImage(axe_player);
 
-    Image walking_player_right = LoadImage("assets/img/walk_player.png");
+    Image walking_player_right = LoadImage("assets/img/Walking/walk_player_right.png");
     Texture2D texture_walking_player_right = LoadTextureFromImage(walking_player_right);
     UnloadImage(walking_player_right);
+
+    Image walking_player_left = LoadImage("assets/img/Walking/walk_player_left.png");
+    Texture2D texture_walking_player_left = LoadTextureFromImage(walking_player_left);
+    UnloadImage(walking_player_left);
 
     //Loading font
     Font font1 = LoadFont("assets/img/Gods_font.png");
@@ -39,30 +44,34 @@ int main(void)
             int currentFrame = 0;
             float frametime = GetFrameTime();
 
-            // loading the structure
-            struct structure_game game = {
-                .basic_screen_texture = basic_screen_texture,
-                .font1 = font1,
-                .frames_counter = 0,
-                .player = {400, 280, 40, 40},
-                .texture_axe_player = texture_axe_player,
-                .texture_walking_player_right = texture_walking_player_right,
-                .player_frame = player_frame,
-                .player_nmb_walking_frame = player_nmb_walking_frame,
-                .framesCounter = framesCounter,
-                .framesSpeed = framesSpeed,
-                .currentFrame = currentFrame,
-                .frametime = frametime,
-                .is_going_right = is_going_right,
-                .is_going_left = is_going_left};
+    // loading the structure
+    struct structure_game game = {
+        .basic_screen_texture = basic_screen_texture,
+        .font1 = font1,
+        .frames_counter = 0,
+        .texture_axe_player = texture_axe_player,
+        .framesCounter = framesCounter,
+        .framesSpeed = framesSpeed,
+        .currentFrame = currentFrame,
+        .frametime = frametime
+    };
 
-            SetTargetFPS(60);
+    struct structure_player player_related = {
+        .player = {400, 280, 40, 40},
+        .player_nmb_walking_frame = player_nmb_walking_frame,
+        .is_going_right = is_going_right,
+        .is_going_left = is_going_left,
+        .texture_walking_player_right = texture_walking_player_right,
+        .texture_walking_player_left = texture_walking_player_left,
+        .player_frame = player_frame};
 
-            while (!WindowShouldClose())
-            {
-                switchscreen(&currentscreen, &game);
+    SetTargetFPS(60);
 
-                switchdrawing(&currentscreen, &game);
+    while (!WindowShouldClose())
+    {
+        switchscreen(&currentscreen, &game, &player_related);
+
+        switchdrawing(&currentscreen, &game, &player_related);
     }
     UnloadFont(font1);
     CloseWindow();

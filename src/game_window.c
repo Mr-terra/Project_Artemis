@@ -1,16 +1,17 @@
 #include <raylib.h>
 #include "gods.h"
 #include "structure_game.h"
+#include "structure_player.h"
 
-void game_window(struct structure_game *game)
+void game_window(struct structure_game *game, struct structure_player *player_related)
 {
 
     Camera2D camera = {0};
-    camera.target = (Vector2){game->player.x + 20.0f, game->player.y + 20.0f};
+    camera.target = (Vector2){player_related->player.x + 20.0f, player_related->player.y + 20.0f};
     camera.offset = (Vector2){SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f};
     camera.zoom = 1.0f;
 
-    Rectangle frameRec = {0.0f, 0.0f, (float)game->player.width / 6, (float)game->player.height};
+    Rectangle frameRec = {0.0f, 0.0f, (float)player_related->player.width / 6, (float)player_related->player.height};
 
     // Animation process
     game->framesCounter++;
@@ -24,7 +25,7 @@ void game_window(struct structure_game *game)
         if (game->currentFrame > 5)
             game->currentFrame = 0;
 
-        frameRec.x = (float)game->currentFrame * (float)game->player.width / 6;
+        frameRec.x = (float)game->currentFrame * (float)player_related->player.width / 6;
     }
 
     // Control frames speed
@@ -43,61 +44,62 @@ void game_window(struct structure_game *game)
     // Player movement
     if (IsKeyDown(KEY_RIGHT))
     {
-        game->player.x += 2;
-        game->is_going_right = true;
+        player_related->player.x += 2;
+        player_related->is_going_right = true;
 
-        if (game->is_going_left == true)
+        if (player_related->is_going_left == true)
         {
             if (game->frametime >= 0.2)
             {
-                game->player_frame = 1;
+                player_related->player_frame = 0;
             }
-            game->player_frame = 0;
+            player_related->player_frame = 0;
 
-            game->is_going_left = false;
+            player_related->is_going_left = false;
         }
 
         if (game->frametime >= 0.2)
         {
-            game->player_frame++;
+            player_related->player_frame++;
             game->frametime = 0;
         }
 
-        if (game->player_frame >= game->player_nmb_walking_frame)
+        if (player_related->player_frame >= player_related->player_nmb_walking_frame)
         {
-            game->player_frame = 2;
+            player_related->player_frame = 2;
         }
 
     }
     else if (IsKeyDown(KEY_LEFT))
     {
-        game->player.x -= 2;
-        game->is_going_left = true;
+        player_related->player.x -= 2;
+        player_related->is_going_left = true;
 
-        if (game->is_going_right == true)
+        if (player_related->is_going_right == true)
         {
             if (game->frametime >= 0.2)
             {
-                game->player_frame = 1;
+                player_related->player_frame = 0;
             }
-            game->player_frame = 0;
+            player_related->player_frame = 0;
 
-            game->is_going_right = false;
+            player_related->is_going_right = false;
         }
 
         if (game->frametime >= 0.2)
         {
-            game->player_frame--;
+            player_related->player_frame++;
             game->frametime = 0;
         }
 
-        if (game->player_frame < 2)
+        if (player_related->player_frame >= player_related->player_nmb_walking_frame)
         {
-            game->player_frame = game->player_nmb_walking_frame - 1;
+            player_related->player_frame = 2;
         }
     }
+
     // Camera target follows player
-    camera.target = (Vector2){game->player.x + 20, game->player.y + 20};
+    camera.target = (Vector2){player_related->player.x + 20, player_related->player.y + 20};
 
     // Drawing stuff
     ClearBackground(RAYWHITE);
@@ -107,20 +109,21 @@ void game_window(struct structure_game *game)
     DrawRectangle(-6000, 320, 13000, 8000, DARKGRAY);
     DrawRectangle(SCREEN_WIDTH / 2 - 100, SCREEN_HEIGHT / 2 - 100, 200, 200, PINK);
 
-    Rectangle rectangle_player_destination = (Rectangle){game->player.x, game->player.y, FRAME_SIZE_WIDTH, FRAME_SIZE_HEIGHT};
+        Rectangle rectangle_player_destination = (Rectangle){player_related->player.x, player_related->player.y, FRAME_SIZE_WIDTH, FRAME_SIZE_HEIGHT};
 
-    Rectangle rectangle_player_source;
+        Rectangle rectangle_player_source;
 
-    if (game->is_going_right == true)
-    {
-        rectangle_player_source = (Rectangle){FRAME_SIZE_WIDTH * game->player_frame, 0, FRAME_SIZE_WIDTH, FRAME_SIZE_HEIGHT};
-    }
+        if (player_related->is_going_right == true)
+        {
+            rectangle_player_source = (Rectangle){FRAME_SIZE_WIDTH * player_related->player_frame, 0, FRAME_SIZE_WIDTH, FRAME_SIZE_HEIGHT};
+            DrawTexturePro(player_related->texture_walking_player_right, rectangle_player_source, rectangle_player_destination, (Vector2){0, 0}, 0, WHITE);
+        }
 
-    if (game->is_going_left == true)
-    {
-        rectangle_player_source = (Rectangle){FRAME_SIZE_WIDTH * game->player_frame, 0, -FRAME_SIZE_WIDTH, FRAME_SIZE_HEIGHT};
-    }
-    DrawTexturePro(game->texture_walking_player_right, rectangle_player_source, rectangle_player_destination, (Vector2){0, 0}, 0, WHITE);
+        if (player_related->is_going_left == true)
+        {
+            rectangle_player_source = (Rectangle){FRAME_SIZE_WIDTH * player_related->player_frame, 0, FRAME_SIZE_WIDTH, FRAME_SIZE_HEIGHT};
+            DrawTexturePro(player_related->texture_walking_player_left, rectangle_player_source, rectangle_player_destination, (Vector2){0, 0}, 0, WHITE);
+        }
 
     EndMode2D();
 

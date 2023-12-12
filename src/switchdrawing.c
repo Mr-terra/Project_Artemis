@@ -3,7 +3,7 @@
 #include <raylib.h>
 #include <stdlib.h>
 
-void switchdrawing(GameScreen *currentscreen, struct structure_game *game)
+void switchdrawing(GameScreen *currentscreen, struct structure_game *game, struct structure_player *player_related)
 {
     BeginDrawing();
     ClearBackground(BLACK);
@@ -39,7 +39,7 @@ void switchdrawing(GameScreen *currentscreen, struct structure_game *game)
         // DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, PURPLE);
         // DrawText("GAMEPLAY SCREEN", 20, 20, 40, MAROON);
         // DrawText("PRESS ENTER or TAP to JUMP to ENDING SCREEN", 130, 220, 20, MAROON);
-        game_window(game);
+        game_window(game, player_related);
     }
     break;
 

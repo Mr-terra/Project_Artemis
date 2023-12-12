@@ -2,7 +2,7 @@
 #include "gods.h"
 #include "structure_game.h"
 
-void switchscreen(GameScreen *currentscreen, struct structure_game *game)
+void switchscreen(GameScreen *currentscreen, struct structure_game *game, struct structure_player *player_related)
 {
     switch (*currentscreen)
     {
